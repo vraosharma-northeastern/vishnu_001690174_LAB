@@ -13,7 +13,8 @@ public class Medicine {
     Double dosage;
 
     public Medicine(){
-        
+        this.medicineName = "";
+        this.dosage = null;
     }
 
     public String getMedicineName() {
@@ -32,7 +33,10 @@ public class Medicine {
         this.dosage = dosage;
     }
     
-    
+    @Override
+    public String toString() {
+        return this.medicineName;
+    }
     /**
      * @param args the command line arguments
      */

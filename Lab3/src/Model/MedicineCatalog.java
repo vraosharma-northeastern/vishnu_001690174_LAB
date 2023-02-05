@@ -41,6 +41,14 @@ public class MedicineCatalog {
         }
         return true;
     }
+    public void removeMed(String name){
+        for(Medicine med : this.medicineCatalog){
+            if (med.getMedicineName().equals(name)){
+                this.medicineCatalog.remove(med);
+                break;
+            }
+        }
+    }
     
     public static void main(String[] args) {
         // TODO code application logic here

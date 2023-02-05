@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 public class ViewPanel extends javax.swing.JPanel {
     Application app;
     DefaultTableModel viewtableModel;
+    Observation currObservation;
     /**
      * Creates new form ViewPanel
      */
@@ -28,6 +29,7 @@ public class ViewPanel extends javax.swing.JPanel {
     public void display(){
         VitalSignHistory history = this.app.getHistory();
         if (history.getVitalSignHistory().size() > 0){
+            viewtableModel.setRowCount(0);
             for (Observation o: history.getVitalSignHistory()){
                 Object row[] = new Object[3];
                 row[0] = o;
@@ -70,6 +72,7 @@ public class ViewPanel extends javax.swing.JPanel {
             }
         });
 
+        idTextField.setEnabled(false);
         idTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idTextFieldActionPerformed(evt);
@@ -87,6 +90,11 @@ public class ViewPanel extends javax.swing.JPanel {
         jLabel4.setText("Temperature");
 
         updateObservationBtn.setText("Update Observation");
+        updateObservationBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateObservationBtnActionPerformed(evt);
+            }
+        });
 
         obsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -195,10 +203,10 @@ public class ViewPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         int selectedRow = obsTable.getSelectedRow();
         if (selectedRow >= 0){
-            Observation obs = (Observation) obsTable.getValueAt(selectedRow, 0);
-            idTextField.setText(String.valueOf(obs.getObservationID()));
-            tempTextField.setText(String.valueOf(obs.getTemperature()));
-            bpTextField.setText(String.valueOf((double) obs.getBloodPressure()));
+            currObservation = (Observation) obsTable.getValueAt(selectedRow, 0);
+            idTextField.setText(String.valueOf(currObservation.getObservationID()));
+            tempTextField.setText(String.valueOf(currObservation.getTemperature()));
+            bpTextField.setText(String.valueOf((double) currObservation.getBloodPressure()));
 
 
             
@@ -206,6 +214,20 @@ public class ViewPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Select a row");
         }
     }//GEN-LAST:event_viewDetsBtnActionPerformed
+
+    private void updateObservationBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateObservationBtnActionPerformed
+        // TODO add your handling code here:
+        if (!idTextField.getText().isBlank()){
+            String temp = tempTextField.getText();
+            String bp = bpTextField.getText();
+            currObservation.setBloodPressure(Double.valueOf(bp));
+            currObservation.setTemperature(Double.valueOf(temp));
+        } else{
+            JOptionPane.showMessageDialog(null, "You have not made any selection");
+        }
+        display();
+        
+    }//GEN-LAST:event_updateObservationBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

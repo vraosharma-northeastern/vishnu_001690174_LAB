@@ -5,6 +5,12 @@
 package UI;
 
 import Model.Application;
+import Model.Medicine;
+import Model.MedicineCatalog;
+import Model.Observation;
+import Model.VitalSignHistory;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,12 +18,15 @@ import Model.Application;
  */
 public class CatalogPanel extends javax.swing.JPanel {
     Application app;
+    DefaultTableModel medtableModel;
     /**
      * Creates new form CatalogPanel
      */
     public CatalogPanel(Application app) {
         initComponents();
         this.app = app;
+        this.medtableModel = (DefaultTableModel) medCatTable.getModel();
+        display();
     }
 
     /**
@@ -29,19 +38,110 @@ public class CatalogPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jScrollPane1 = new javax.swing.JScrollPane();
+        medCatTable = new javax.swing.JTable();
+        doseField = new javax.swing.JTextField();
+        medName = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        addBtn = new javax.swing.JButton();
+        delBtn1 = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(0, 153, 153));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        medCatTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Dosage"
+            }
+        ));
+        jScrollPane1.setViewportView(medCatTable);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 90, -1, -1));
+        add(doseField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 210, -1));
+        add(medName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 210, -1));
+
+        jLabel1.setText("Dosage");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
+
+        jLabel2.setText("Medicine Name");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
+
+        addBtn.setText("Add");
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBtnActionPerformed(evt);
+            }
+        });
+        add(addBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 270, -1, -1));
+
+        delBtn1.setText("Delete");
+        delBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delBtn1ActionPerformed(evt);
+            }
+        });
+        add(delBtn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 540, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
+
+    public void display(){
+        MedicineCatalog catalog = this.app.getCatalog();
+        if (catalog.getMedicineCatalog().size() > 0){
+            medtableModel.setRowCount(0);
+            for (Medicine med: catalog.getMedicineCatalog()){
+                Object row[] = new Object[2];
+                row[0] = med;
+                row[1] = med.getDosage();
+                
+                medtableModel.addRow(row); 
+            }
+        } else{
+            System.out.println("empty");
+        }
+    }
+    
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+        // TODO add your handling code here:
+        //add obs to vital signs
+        MedicineCatalog catalog = this.app.getCatalog();
+        String mName = medName.getText();
+        String Dose = doseField.getText();
+        
+        double dosecheck = Double.parseDouble(Dose);
+
+        if(catalog.checkMedicineIDUnique(mName)){
+            catalog.createMedicine(mName, Double.valueOf(Dose));
+        } else{
+            JOptionPane.showMessageDialog(null, "This id already exists" );
+        }
+        display();
+        
+    }//GEN-LAST:event_addBtnActionPerformed
+
+    private void delBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBtn1ActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = medCatTable.getSelectedRow();
+        if (selectedRow >= 0){
+            Medicine med  = (Medicine) medCatTable.getValueAt(selectedRow, 0);
+            app.getCatalog().removeMed(med.getMedicineName());
+            display();
+        }else {
+            JOptionPane.showMessageDialog(null, "Select a row");
+        }           
+    }//GEN-LAST:event_delBtn1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addBtn;
+    private javax.swing.JButton delBtn1;
+    private javax.swing.JTextField doseField;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable medCatTable;
+    private javax.swing.JTextField medName;
     // End of variables declaration//GEN-END:variables
 }

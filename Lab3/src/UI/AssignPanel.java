@@ -4,7 +4,9 @@
  */
 package UI;
 
-import Model.Application;
+import Model.*;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,12 +14,17 @@ import Model.Application;
  */
 public class AssignPanel extends javax.swing.JPanel {
     Application app;
+    DefaultTableModel tableModel;
+
     /**
      * Creates new form AssignPanel
      */
     public AssignPanel(Application app) {
         initComponents();
         this.app = app;
+        populateDropdowns();
+        this.tableModel = (DefaultTableModel) medobsTable.getModel();
+        display();
     }
 
     
@@ -30,19 +37,147 @@ public class AssignPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        obsBox = new javax.swing.JComboBox();
+        medicineBox = new javax.swing.JComboBox();
+        assignMedBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        medobsTable = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+
+        obsBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                obsBoxActionPerformed(evt);
+            }
+        });
+
+        assignMedBtn.setText("Assign");
+        assignMedBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assignMedBtnActionPerformed(evt);
+            }
+        });
+
+        medobsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Observation ID", "Medicine Name"
+            }
+        ));
+        jScrollPane1.setViewportView(medobsTable);
+
+        jLabel1.setText("Observations");
+
+        jLabel2.setText("Recommended Treatment");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(122, 122, 122)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(assignMedBtn)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addGap(209, 209, 209)
+                                    .addComponent(jLabel2))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(obsBox, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(100, 100, 100)
+                                    .addComponent(medicineBox, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(131, 131, 131)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(obsBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(medicineBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(assignMedBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39))
         );
     }// </editor-fold>//GEN-END:initComponents
+    
+    public void populateDropdowns() {
+        
+        ArrayList<Medicine> medicines = this.app.getCatalog().getMedicineCatalog();
+        
+        ArrayList<Observation> observations = this.app.getHistory().getVitalSignHistory();
+        
+        for(Observation o: observations) {
+            obsBox.addItem(o);
+        }
+        
+        for(Medicine med: medicines) {
+            medicineBox.addItem(med);
+        }
+        
+    }
+    
+    private void assignMedBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignMedBtnActionPerformed
+        // TODO add your handling code here:
+        Observation o = (Observation) obsBox.getSelectedItem();
+        Medicine m = (Medicine) medicineBox.getSelectedItem();
+        
+        o.setMedication(m);
+        
+        VitalSignHistory history = this.app.getHistory();
+        if (history.getVitalSignHistory().size() > 0){
+            for (Observation obs: history.getVitalSignHistory()){
+                if(obs.getMedication() != null){
+                    display();
+                    break;
+                }
+            }
+        }
+        
+    }//GEN-LAST:event_assignMedBtnActionPerformed
 
+    private void obsBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_obsBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_obsBoxActionPerformed
+
+    public void display(){
+        VitalSignHistory history = this.app.getHistory();
+        if (history.getVitalSignHistory().size() > 0){
+            tableModel.setRowCount(0);
+            for (Observation o: history.getVitalSignHistory()){
+                if(!"".equals(o.getMedication().getMedicineName())){
+                    Object row[] = new Object[2];
+                    row[0] = o;
+                    row[1] = o.getMedication().getMedicineName();
+                    tableModel.addRow(row); 
+                }
+            }
+        } else{
+            System.out.println("empty");
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton assignMedBtn;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox medicineBox;
+    private javax.swing.JTable medobsTable;
+    private javax.swing.JComboBox obsBox;
     // End of variables declaration//GEN-END:variables
 }

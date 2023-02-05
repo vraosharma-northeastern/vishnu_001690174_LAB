@@ -36,10 +36,16 @@ public class VitalSignHistory {
         this.vitalSignHistory.add(observation);
         return observation;
     }
+    public Observation findObservation(int id){
+        for(Observation o : this.vitalSignHistory){
+            if (o.getObservationID() == id){
+                return o;
+            }
+        }
+        return null;
+    }
     
     public Boolean checkObservationIDUnique(int id){
-        
-        
         for (Observation o: this.vitalSignHistory){
             if (o.getObservationID() == (id)){
                 return false;

@@ -12,9 +12,9 @@ public class Observation {
     int observationID;
     private double bloodPressure;
     private double temperature;
-    
+    private Medicine medication;
     public Observation(){
-        
+        this.medication = new Medicine();
     }
 
     public int getObservationID() {
@@ -40,6 +40,15 @@ public class Observation {
     public void setTemperature(double temperature) {
         this.temperature = temperature;
     }
+    
+    public Medicine getMedication() {
+        return medication;
+    }
+
+    public void setMedication(Medicine medication) {
+        this.medication = medication;
+    }
+   
 
     @Override
     public String toString() {
