@@ -33,7 +33,6 @@ public class CreateObs extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         bpTextField = new javax.swing.JTextField();
         idTextField = new javax.swing.JTextField();
@@ -41,12 +40,10 @@ public class CreateObs extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         addObservationBtn = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(153, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setText("Create a Vital Sign");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, -1, -1));
 
         jLabel2.setText("Blood Pressure");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, -1, -1));
@@ -85,6 +82,10 @@ public class CreateObs extends javax.swing.JPanel {
             }
         });
         add(addObservationBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jLabel1.setText("Create Vital Signs");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void bpTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bpTextFieldActionPerformed

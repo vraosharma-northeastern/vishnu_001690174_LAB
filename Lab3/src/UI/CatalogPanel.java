@@ -46,6 +46,7 @@ public class CatalogPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         addBtn = new javax.swing.JButton();
         delBtn1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(0, 153, 153));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -61,7 +62,7 @@ public class CatalogPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(medCatTable);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 90, -1, -1));
-        add(doseField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 210, -1));
+        add(doseField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 210, 210, -1));
         add(medName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 210, -1));
 
         jLabel1.setText("Dosage");
@@ -85,11 +86,15 @@ public class CatalogPanel extends javax.swing.JPanel {
             }
         });
         add(delBtn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 540, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jLabel3.setText("Create Treatments");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     public void display(){
         MedicineCatalog catalog = this.app.getCatalog();
-        if (catalog.getMedicineCatalog().size() > 0){
+        if (catalog.getMedicineCatalog().size() >= 0){
             medtableModel.setRowCount(0);
             for (Medicine med: catalog.getMedicineCatalog()){
                 Object row[] = new Object[2];
@@ -127,10 +132,16 @@ public class CatalogPanel extends javax.swing.JPanel {
         if (selectedRow >= 0){
             Medicine med  = (Medicine) medCatTable.getValueAt(selectedRow, 0);
             app.getCatalog().removeMed(med.getMedicineName());
-            display();
         }else {
+            
+            
             JOptionPane.showMessageDialog(null, "Select a row");
-        }           
+        }
+        System.out.println("1");
+        display();
+        System.out.println("2");
+        
+
     }//GEN-LAST:event_delBtn1ActionPerformed
 
 
@@ -140,6 +151,7 @@ public class CatalogPanel extends javax.swing.JPanel {
     private javax.swing.JTextField doseField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable medCatTable;
     private javax.swing.JTextField medName;
