@@ -146,7 +146,7 @@ public class AssignPanel extends javax.swing.JPanel {
         o.setMedication(m);
         
         VitalSignHistory history = this.app.getHistory();
-        if (history.getVitalSignHistory().size() > 0){
+        if (!history.getVitalSignHistory().isEmpty()){
             for (Observation obs: history.getVitalSignHistory()){
                 if(obs.getMedication() != null){
                     display();

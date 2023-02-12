@@ -28,7 +28,7 @@ public class ViewPanel extends javax.swing.JPanel {
     
     public void display(){
         VitalSignHistory history = this.app.getHistory();
-        if (history.getVitalSignHistory().size() > 0){
+        if (!history.getVitalSignHistory().isEmpty()){
             viewtableModel.setRowCount(0);
             for (Observation o: history.getVitalSignHistory()){
                 Object row[] = new Object[3];
@@ -208,9 +208,7 @@ public class ViewPanel extends javax.swing.JPanel {
             idTextField.setText(String.valueOf(currObservation.getObservationID()));
             tempTextField.setText(String.valueOf(currObservation.getTemperature()));
             bpTextField.setText(String.valueOf((double) currObservation.getBloodPressure()));
-
-
-            
+  
         }else {
             JOptionPane.showMessageDialog(null, "Select a row");
         }
